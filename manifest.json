@@ -1,0 +1,20 @@
+{
+  "name": "Twitchee",
+  "description": "Persistent Twitch Player",
+  "version": "0.1",
+  "manifest_version": 2,
+  "app": {
+      "matches": [
+        "<all_urls>"
+      ],
+    "background": {
+      "scripts": ["background.js", "jquery-3.2.1.min.js", "jquery-ui.min.js", "content.js", "lib/ral.min.js"]
+    }
+  },
+  "permissions": [
+    "<all_urls>",
+    "webview",
+    "alwaysOnTopWindows",
+    "storage"
+    ]
+}

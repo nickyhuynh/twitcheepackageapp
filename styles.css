@@ -1,0 +1,189 @@
+input {
+  autocomplete: "on";
+}
+
+webview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 540px;
+  height: 320px;
+}
+
+#twitcheeExtension {
+  width: 540px;
+  height: 320px;
+  position: fixed;
+  background-color: #17141f;
+  left: 0;
+  top: 0;
+  z-index: 214743647;
+}
+
+.twitcheeNaviButton {
+  width: 20px;
+  height: 20px;
+  background-size: 20px 20px;
+  padding: 15px;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  float: left;
+}
+
+#twitcheeExitButton {
+  width: 15px;
+  height: 15px;
+  background-size: 15px 15px;
+  padding: 17.5px;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  right: 0;
+}
+
+#twitcheeSearchHeader {
+  height: 50px;
+  background-color: #4b367c;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: flex;
+}
+
+#twitcheeSearchBar {
+  width: 200px;
+  height: 25px;
+  margin: auto;
+  background-color: #FFF;
+  opacity: 0.4;
+  align-items: center;
+}
+
+#twitcheeContentWindow {
+  position: absolute;
+  max-height: 270px;
+  height: 270px;
+  left: 0;
+  min-width: 540px;
+  display: inline-block;
+  overflow-y: scroll;
+}
+
+.twitcheeGame {
+    cursor: pointer;
+    width: 136px;
+    height: 190px;
+    margin-left: 33px;
+    margin-top: 33px;
+    float: left;
+}
+
+.twitcheeChannel {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  height: 30px;
+  width: 504px;
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 30px;
+  text-align: left;
+  padding-left: 15px;
+  padding-right: 15px;
+  overflow: 'hidden';
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  max-width: 534px;
+  cursor: pointer;
+}
+
+#twitcheeStreamOverlay {
+    position: absolute;
+    height: 50px;
+    width: 540px;
+    opacity: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#twitcheeStreamOverlay:hover {
+    opacity: 1;
+}
+
+iframe {
+    border-radius: 5px;
+}
+
+#twitcheeLoader {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  z-index: 1;
+  width: 21px;
+  height: 21px;
+  margin: -13.5px 0 0 -13.5px;
+  border: 3px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 3px solid #4b367c;
+  width: 21px;
+  height: 21px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+/*.dragEnabled{
+    draggable: true;
+    -webkit-user-drag: element;
+    cursor: move;
+}*/
+
+.ui-autocomplete {
+  position:absolute;
+  z-index: 1001;
+}
+
+.ui-widget.ui-widget-content {
+  border: 1px solid #c5c5c5;
+  background: #ababab;
+  color: #333333;
+}
+
+.ui-menu {
+	list-style: none;
+	padding: 3px;
+	margin: 0;
+	display: block;
+	outline: 0;
+}
+
+.ui-menu-item {
+  cursor: pointer;
+  height: 25px;
+  align-items: center;
+  text-align:center;
+  line-height: 25px;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+   background-color: rgba(255,255,255,0.4);
+  -webkit-border-radius: 80px;
+}
+::-webkit-scrollbar:hover {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  background: rgba(0,0,0,0.61);
+  -webkit-border-radius: 80px;
+}
+::-webkit-scrollbar-thumb:vertical:active {
+  background: rgba(0,0,0,0.61);
+  -webkit-border-radius: 80px;
+}
