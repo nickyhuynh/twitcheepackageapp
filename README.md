@@ -4,9 +4,9 @@ The Twitchee app is basically an app that lets you run an always-on-top window f
 
 Installation Instructions:
 
-'''
+```
 git clone https://github.com/nickyhuynh/twitcheepackageapp
-'''
+```
 
 1. Open chrome://extensions in your Chrome browser to get to your extensions page.
 2. Tick the Developer Mode box.
