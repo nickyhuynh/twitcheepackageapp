@@ -107,13 +107,13 @@ function loadChannelsPage() {
     pendingAction = setTimeout(function() {
       getJSON(url, function(err, data) {
         // console.log(data["channels"].map(function(chan) {return chan["name"]}));
-         $("#twitcheeSearchBar").autocomplete({
-          source: data["channels"].map(function(chan) {return chan["name"]})
-        });
+         // $("#twitcheeSearchBar").autocomplete({
+         //  source: data["channels"].map(function(chan) {return chan["name"]})
+         //  });
 
         $("#twitcheeSearchBar").attr("autocomplete", "on");
       });
-    }, 400);
+    });
   });
 
   var favoriteButton = document.createElement('div');
@@ -127,15 +127,15 @@ function loadChannelsPage() {
   favoriteButton.segueFrom = 'homePage';
   favoriteButton.addEventListener("click", loadChannels, false);
 
-  var exitButton = document.createElement('div');
-  exitButton.style.backgroundImage = 'url(' + chrome.runtime.getURL('cancel.png') + ')';
-  exitButton.id = 'twitcheeExitButton';
-  exitButton.addEventListener("click", function() {
-      document.getElementById('twitcheeExtension').outerHTML = '';
-  }, false);
+  // var exitButton = document.createElement('div');
+  // exitButton.style.backgroundImage = 'url(' + chrome.runtime.getURL('cancel.png') + ')';
+  // exitButton.id = 'twitcheeExitButton';
+  // exitButton.addEventListener("click", function() {
+  //     document.getElementById('twitcheeExtension').outerHTML = '';
+  // }, false);
 
   searchHeader.appendChild(favoriteButton);
-  searchHeader.appendChild(exitButton);
+  // searchHeader.appendChild(exitButton);
   searchHeader.appendChild(searchBar);
 
   var games = loadGames();
@@ -144,15 +144,13 @@ function loadChannelsPage() {
   contentWindow.innerHTML = "";
   header.appendChild(searchHeader);
 
-  console.log("zxcvzxv");
-
   contentWindow.appendChild(games);
 }
 
 function loadGames() {
   var games = document.createElement('div');
 
-  var url = "https://api.twitch.tv/kraken/games/top?limit=9&client_id=" + clientId;
+  var url = "https://api.twitch.tv/kraken/games/top?limit=30&client_id=" + clientId;
 
   var gameImages = [];
   var gameData;
@@ -205,26 +203,6 @@ function loadGames() {
 
         xhr.send();
     }
-
-    // var remoteImage,
-    //     toLoad = { 'images': gameImages }; // list of image URLs
-    //
-    // var i = 0;
-    //
-    // toLoad.images.forEach(function(imageToLoad) {
-    //       remoteImage = new RAL.RemoteImage(imageToLoad);
-    //       gameObjs[i].style.backgroundImage = remoteImage.element;
-    //       RAL.Queue.add(remoteImage);
-    //       i+=1;
-    // });
-    // RAL.Queue.setMaxConnections(4);
-    // RAL.Queue.start();
-
-    //var loader = document.getElementById('twitchee//loader');
-
-    // if(loader != null) {
-    //   //loader.outerHTML = "";
-    // }
   })
 
   return games;
@@ -243,6 +221,7 @@ function returnChannelsPage(evt) {
 }
 
 function loadChannels(evt) {
+
   document.getElementById('twitcheeFavoriteButtonHome').style.left = '50px';
 
   var twitchExtension = document.getElementById('twitcheeExtension');
@@ -286,8 +265,8 @@ function loadChannels(evt) {
   if(evt.target.channels == null) {
     document.getElementById('twitcheeFavoriteButtonHome').segueFrom = 'channelsPage';
 
-    var gameName = evt.target.data["top"][evt.target.index]["game"]["name"];
-    var url = "https://api.twitch.tv/kraken/streams?limit=20&game=" + gameName + "&client_id=" + clientId;
+    var gameName = encodeURIComponent(evt.target.data["top"][evt.target.index]["game"]["name"]);
+    var url = "https://api.twitch.tv/kraken/streams?limit=50&game=" + gameName + "&client_id=" + clientId;
 
     getJSON(url, function(err, data) {
       var contentWindow = document.getElementById("twitcheeContentWindow");
@@ -300,13 +279,16 @@ function loadChannels(evt) {
         var channelData = data["streams"][i];
         channel.className = 'twitcheeChannel';
         channel.textContent = channelData["viewers"] + " viewers / " + channelData["channel"]["display_name"] + " / " + channelData["channel"]["status"];
-        channel.channelName = channelData["channel"]["display_name"];
+        channel.channelName = channelData["channel"]["name"];
         channel.channelData = channelData;
         channel.addEventListener("click", openStream, false);
         contentWindow.appendChild(channel);
       }
 
       //loader.outerHTML = "";
+      $(document).ready(function(){
+          $(contentWindow).scrollTop(0);
+      });
     });
 } else {
     var contentWindow = document.getElementById("twitcheeContentWindow");
@@ -319,7 +301,7 @@ function loadChannels(evt) {
       var channelData =  evt.target.channels[i];
       channel.className = 'twitcheeChannel';
       channel.textContent = channelData["viewers"] + " viewers / " + channelData["channel"]["display_name"] + " / " + channelData["channel"]["status"];
-      channel.channelName = channelData["channel"]["display_name"];
+      channel.channelName = channelData["channel"]["name"];
       channel.channelData = channelData;
       channelData.segueFrom = "frontPage";
       channel.addEventListener("click", openStream, false);
@@ -348,6 +330,10 @@ function loadChannels(evt) {
     }
     document.getElementById('twitcheeFavoriteButtonHome').style.visibility = 'collapse';
     //loader.outerHTML = "";
+
+    $(document).ready(function(){
+        $(contentWindow).scrollTop(0);
+    });
   }
 }
 
@@ -418,7 +404,7 @@ function openStream(evt) {
   exitButton.style.backgroundImage = 'url(' + chrome.runtime.getURL('cancel.png') + ')';
   exitButton.id = 'twitcheeExitButton';
   exitButton.addEventListener("click", function() {
-      document.getElementById('twitcheeExtension').outerHTML = '';
+      document.getElementById('twitcheeStream').outerHTML = '';
   }, false);
 
   streamOverlay.id = 'twitcheeStreamOverlay';
@@ -427,10 +413,28 @@ function openStream(evt) {
   streamOverlay.appendChild(favoriteButton);
   streamOverlay.appendChild(exitButton);
 
-  twitchStream.innerHTML = '<webview id="twitcheePlayer" src="https://player.twitch.tv/?channel=' + evt.target.channelName +'&muted=true" frameborder="0" scrolling="no" allowfullscreen webkitallowfullscreen mozallowfullscreen> </webview>'
+  var width = $(window).width();
+  var height = $(window).height();
+
+  streamOverlay.style.width = width + 'px';
+
+  console.log(evt.target.channelData);
+  twitchStream.innerHTML = '<webview id="twitcheePlayer" src="https://player.twitch.tv/?channel=' + evt.target.channelName +'&muted=false" frameborder="0" scrolling="no" allowfullscreen webkitallowfullscreen mozallowfullscreen> </webview>'
   twitchStream.className = 'twitcheeDragEnabled';
   twitchStream.appendChild(streamOverlay);
   twitchExtension.appendChild(twitchStream);
+
+  var wv = document.getElementById('twitcheePlayer');
+  if(wv != null) {
+      wv.style.width = width + 'px';
+      wv.style.height = height + 'px';
+  }
+
+  document.getElementById('twitcheePlayer').addEventListener('permissionrequest', function(e) {
+    if (e.permission === 'fullscreen') {
+      e.request.allow();
+    }
+  });
 
   // $(function() {
   //     $('.twitchDragEnabled').draggable();
@@ -447,29 +451,50 @@ function openStream(evt) {
 }
 
 function addFavorite(evt) {
-    // console.log(evt.target.channelData);
+    console.log(evt.target.channelData);
     chrome.storage.local.get({favoriteChannels: []}, function(result) {
         var favoriteChannels = result.favoriteChannels;
         var favoriteButton = document.getElementById('twitcheeFavoriteButton');
-
-        console.log(favoriteChannels);
 
         if(!contains(favoriteChannels, evt.target.channelData)) {
             favoriteChannels.push(evt.target.channelData);
 
             chrome.storage.local.set({favoriteChannels: favoriteChannels}, function(result) {
             });
-            favoriteButton.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
-        } else {
             favoriteButton.style.backgroundColor = 'rgba(255, 0, 0, 0.4)';
+        } else {
+            favoriteButton.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
             remove(favoriteChannels, evt.target.channelData);
 
             chrome.storage.local.set({favoriteChannels: favoriteChannels}, function(result) {
                 //when deleted unighlight heart
             });
         }
-
-        // console.log("channelData", evt.target.channelData);
-        // console.log("favoriteChannels", favoriteChannels);
+    //
+    //     // console.log("channelData", evt.target.channelData);
+    //     // console.log("favoriteChannels", favoriteChannels);
     });
 }
+
+window.onresize = function(event) {
+    var wv = document.getElementById('twitcheePlayer');
+    var tcw = document.getElementById('twitcheeContentWindow');
+    var so = document.getElementById('twitcheeStreamOverlay');
+
+    var width = $(window).width();
+    var height = $(window).height();
+
+    if(wv != null) {
+      wv.style.width = width + 'px';
+      wv.style.height = height + 'px';
+    }
+
+    if(tcw != null) {
+      tcw.style.width = width + 'px';
+      // tcw.style.height = height - 50 + 'px';
+    }
+
+    if(so != null) {
+      so.style.width = width + 'px';
+    }
+};

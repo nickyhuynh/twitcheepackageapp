@@ -2,17 +2,20 @@ input {
   autocomplete: "on";
 }
 
-webview {
-  position: absolute;
-  top: 0;
-  left: 0;
+html {
   width: 540px;
   height: 320px;
 }
 
+webview {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 #twitcheeExtension {
-  width: 540px;
-  height: 320px;
+  width: 100%;
+  height: 100%;
   position: fixed;
   background-color: #17141f;
   left: 0;
@@ -57,16 +60,20 @@ webview {
   background-color: #FFF;
   opacity: 0.4;
   align-items: center;
+  visibility: collapse;
 }
 
 #twitcheeContentWindow {
   position: absolute;
-  max-height: 270px;
-  height: 270px;
+  min-height: 270px;
+  width: 100%;
+  top: 50px;
+  bottom: 0;
   left: 0;
   min-width: 540px;
   display: inline-block;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .twitcheeGame {
@@ -82,7 +89,7 @@ webview {
   background-color: rgba(255, 255, 255, 0.4);
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   height: 30px;
-  width: 504px;
+  width: 100%;
   color: rgba(0, 0, 0, 0.7);
   line-height: 30px;
   text-align: left;
@@ -92,14 +99,14 @@ webview {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow-x: hidden;
-  max-width: 534px;
+  /*max-width: 534px;*/
   cursor: pointer;
 }
 
 #twitcheeStreamOverlay {
     position: absolute;
     height: 50px;
-    width: 540px;
+    width: 100%;
     opacity: 0;
     left: 0;
     top: 0;

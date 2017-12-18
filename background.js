@@ -5,9 +5,11 @@ var document;
 chrome.app.runtime.onLaunched.addListener(function() {
     chrome.app.window.create('window.html', {
       alwaysOnTop: true,
-      'outerBounds': {
-          'width': 540,
-          'height': 320
+      innerBounds: {
+          width: 540,
+          height: 320,
+          minWidth: 540,
+          minHeight: 320
       },
     }, function (appWindow) {
       // Window created and will remain on top of others

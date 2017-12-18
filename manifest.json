@@ -11,10 +11,14 @@
       "scripts": ["background.js", "jquery-3.2.1.min.js", "jquery-ui.min.js", "content.js", "lib/ral.min.js"]
     }
   },
+  "icons": { "16": "icon.png",
+           "48": "icon.png",
+          "128": "icon.png" },
   "permissions": [
     "<all_urls>",
     "webview",
+    "app.window.fullscreen",
     "alwaysOnTopWindows",
     "storage"
-    ]
+  ]
 }
